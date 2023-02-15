@@ -14,7 +14,7 @@ class Post(BaseModel):
     )
     title = models.CharField(max_length=255)
     description = models.TextField()
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True, null=True)
     rating = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     image = models.ImageField(
@@ -26,7 +26,7 @@ class Post(BaseModel):
     category = models.CharField(max_length=255)
 
     def __str__(self):
-        return "{} - {}".format(self.author, self.title)
+        return f'{self.author} - {self.title}'
 
     def save(self, *args, **kwargs):
         if self.slug is None:
@@ -58,11 +58,10 @@ class Post(BaseModel):
         return thumbnail
 
 
-class Vote(models.Model):
+class Vote(BaseModel):
     voter = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="votes")
-    created_at = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return "{} - {}".format(self.voter, self.post)
+        return f'{self.voter} - {self.post}'
 

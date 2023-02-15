@@ -17,5 +17,5 @@ class Comment(MPTTModel):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "{} - {}".format(self.author, self.post)
+        return f'{self.author} - {self.post}'
 
