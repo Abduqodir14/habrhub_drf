@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: backend
+    restart: always
+    build:
+      context: .
+    volumes:
+      - .:/backend
+    command: >
+      bash -c "python manage.py migrate --noinput && python manage.py collectstatic --noinput && gunicorn config.wsgi:application --log-level debug --timeout 120 --bind 0.0.0.0:8000 --reload"
+    ports:
+      - 9999:8000
+    depends_on:
+      - db
+      - redis
+
+  db:
+    container_name: habrbub_db
+    image: postgres:15
+    restart: always
+    environment:
+      - POSTGRES_DB=habr
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+    expose:
+      - 5432
+    volumes:
+      - ./dump:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7.0.5-alpine
+    hostname: redis
+
+volumes:
+  dump:
+
