@@ -15,3 +15,5 @@ django-constance[database]
 psycopg2-binary
 django-ckeditor
 gunicorn
+django-mptt
+redis

@@ -1,6 +1,5 @@
 import uuid
 from django.db import models
-from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
 
 
@@ -13,9 +12,6 @@ class User(AbstractUser):
     bio = models.TextField(blank=True)
     skills = models.CharField(max_length=255, blank=True)
     # last_activity = models.DateTimeField()
-
-    # def get_absulute_url(self):
-    #     return reverse('user-detail', kwargs={'username': self.username})
 
     # class Meta:
     #     app_label = 'apps.users'

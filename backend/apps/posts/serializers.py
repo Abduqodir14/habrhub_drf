@@ -14,7 +14,13 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('id', 'title', 'description', 'image', 'category', 'author')
+        fields = ('id', 'title', 'slug', 'description', 'image', 'thumbnail', 'category', 'author')
+
+        # def get_image(self, obj):
+        #     return obj.get_image()
+        #
+        # def get_thumbnail(self, obj):
+        #     return obj.get_thumbnail()
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -33,6 +39,10 @@ class VoteSerializer(serializers.ModelSerializer):
         model = Vote
         fields = '__all__'
 
+
+class PostAnalyticsSerializer(serializers.Serializer):
+    date_from = serializers.DateTimeField(required=True)
+    date_to = serializers.DateTimeField(required=True)
 
 
 

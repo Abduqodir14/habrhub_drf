@@ -18,10 +18,10 @@ class Post(BaseModel):
     rating = models.IntegerField(default=0)
     views = models.IntegerField(default=0)
     image = models.ImageField(
-        upload_to="photos/%Y/%m/%d/", blank=True, validators=[validate_image]
+        upload_to="photos/%Y/%m/%d/", blank=True, null=True, validators=[validate_image]
     )
     thumbnail = models.ImageField(
-        upload_to="thumbnails/%Y/%m/%d/", blank=True, validators=[validate_image]
+        upload_to="thumbnails/%Y/%m/%d/", blank=True, null=True, validators=[validate_image]
     )
     category = models.CharField(max_length=255)
 
@@ -31,26 +31,12 @@ class Post(BaseModel):
     def save(self, *args, **kwargs):
         if self.slug is None:
             self.slug = slugify(self.title)
+        if not self.thumbnail:
+            self.thumbnail = self.make_thumbnail(self.image)
         super().save(*args, **kwargs)
 
-    def get_image(self):
-        if self.image:
-            return "https://127:0.0.1:8000" + self.image.url
-        return ""
-
-    def get_thumbnail(self):
-        if self.thumbnail:
-            return "https://127:0.0.1:8000" + self.thumbnail.url
-        else:
-            if self.image:
-                self.thumbnail = self.make_thumbnail(self.image)
-                self.save()
-            else:
-                return ""
-
     def make_thumbnail(self, image, size=(150, 100)):
-        img = Image.open(image)
-        img.convert("RGB")
+        img = Image.open(image).convert('RGB')
         img.thumbnail(size)
         thumb_io = BytesIO()
         img.save(thumb_io, "JPEG", quality=80)
