@@ -11,8 +11,3 @@ class User(AbstractUser):
     rating = models.IntegerField(default=0)
     bio = models.TextField(blank=True)
     skills = models.CharField(max_length=255, blank=True)
-    # last_activity = models.DateTimeField()
-
-    # class Meta:
-    #     app_label = 'apps.users'
-

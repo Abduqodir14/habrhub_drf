@@ -33,6 +33,37 @@ services:
     image: redis:7.0.5-alpine
     hostname: redis
 
+  worker:
+    build:
+      context: .
+    hostname: worker
+    entrypoint: celery
+    command:
+      -A celery_app.app worker --loglevel=info
+    volumes:
+      - .:/backend
+    links:
+      - rabbit
+    depends_on:
+      - db
+      - rabbit
+
+  rabbit:
+    container_name: rabbit_habr
+    hostname: rabbit
+    image: rabbitmq:3-management
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      # Expose the port for the worker to add/get tasks
+      - "5673:5673"
+      # OPTIONAL: Expose the GUI port
+      - "15673:15673"
+    volumes:
+      - ./docker/rabbitmq/myrabbit.conf:/etc/rabbitmq/conf.d/10-defaults.conf
+
 volumes:
   dump:
 

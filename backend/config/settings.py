@@ -274,3 +274,17 @@ CACHES = {
         }
     }
 }
+
+# RABBIT_HOSTNAME = os.environ.get('RABBIT_PORT_5673_TCP', 'rabbit')
+#
+# if RABBIT_HOSTNAME.startswith('tcp://'):
+#     RABBIT_HOSTNAME = RABBIT_HOSTNAME.split('//')[1]
+
+CELERY_BROKER_URL = 'amqp://admin:mypass@rabbit:5673/'
+# BROKER_URL = os.environ.get('BROKER_URL', '')
+# if not BROKER_URL:
+#     BROKER_URL = 'amqp://{user}:{password}@{hostname}/{vhost}/'.format(
+#         user=os.environ.get('RABBIT_ENV_USER', 'admin'),
+#         password=os.environ.get('RABBIT_ENV_RABBITMQ_PASS', 'mypass'),
+#         hostname=RABBIT_HOSTNAME,
+#         vhost=os.environ.get('RABBIT_ENV_VHOST', ''))

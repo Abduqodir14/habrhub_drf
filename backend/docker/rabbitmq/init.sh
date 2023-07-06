@@ -1,0 +1,1 @@
+sudo rabbitmqctl set_permissions -p rabbit admin "." "." ".*"
